@@ -1,0 +1,52 @@
+# R specific
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+renv/local.R
+
+# Python specific
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints
+.pytest_cache/
+pytest-env/
+
+# Quarto specific
+/.quarto/
+_site/
+*.html
+/.jupyter_cache/
+*.knit.md
+/_freeze/
+*_cache/
+*_files/
+/.luarc.json
+
+# Project specific files
+2025/day_04.html
+2025/day_04.qmd
+2025/day01.Rmd
+data/
+
+# Environment files
+.env
+.venv
+env/
+venv/
+ENV/
+
+# OS specific
+.DS_Store
+Thumbs.db
+.directory
+.Trash-*
+
+# Editor specific
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+.httr-oauth
+.quarto

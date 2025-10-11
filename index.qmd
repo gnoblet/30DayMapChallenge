@@ -1,0 +1,182 @@
+---
+page-layout: full
+toc: false
+---
+
+```{=html}
+<style>
+.category-row {
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+}
+
+.category-title {
+  margin-bottom: 1.5rem;
+  font-weight: 700;
+  color: #3a506b;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid #5bc0be;
+}
+
+.day-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-gap: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+.day-thumbnail {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+  text-decoration: none;
+  display: block;
+}
+
+.day-thumbnail:hover {
+  transform: translateY(-5px);
+}
+
+.day-thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+
+.day-number {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  border-bottom-right-radius: 8px;
+  z-index: 2;
+}
+
+.day-title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.7rem;
+  text-align: center;
+  z-index: 2;
+}
+
+.empty-thumbnail {
+  background-color: #f0f0f0;
+  border: 1px dashed #ccc;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+}
+
+.empty-thumbnail .day-number {
+  position: static;
+  background-color: transparent;
+  color: #666;
+  font-size: 1.2rem;
+  margin-bottom: 0.5rem;
+}
+
+.empty-thumbnail .day-title {
+  position: static;
+  background-color: transparent;
+  color: #666;
+}
+
+@media (max-width: 992px) {
+  .day-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .day-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 576px) {
+  .day-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.footer-content {
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #666;
+}
+</style>
+```
+
+```{=html}
+<!-- Comparisons Category -->
+<div class="category-row">
+  <h2 class="category-title">Comparisons</h2>
+  <div class="day-grid">
+    <!-- Day 01 -->
+    <a href="2025/day_01.qmd" class="day-thumbnail">
+      <img src="2025/day_01.png" alt="Day 01">
+      <div class="day-number">01</div>
+      <div class="day-title">Fractions</div>
+    </a>
+
+    <!-- Day 02 -->
+    <a href="2025/day_02.qmd" class="day-thumbnail">
+      <img src="2025/day_02.png" alt="Day 02">
+      <div class="day-number">02</div>
+      <div class="day-title">Slope</div>
+    </a>
+
+    <!-- Day 03 -->
+    <a href="2025/day_03.qmd" class="day-thumbnail">
+      <img src="2025/day_03.png" alt="Day 03">
+      <div class="day-number">03</div>
+      <div class="day-title">Circular</div>
+    </a>
+
+    <!-- Day 04 (Empty) -->
+    <div class="day-thumbnail empty-thumbnail">
+      <div class="day-number">04</div>
+      <div class="day-title">Big or Small</div>
+    </div>
+
+    <!-- Day 05 (Empty) -->
+    <a href="2025/day_05.qmd" class="day-thumbnail">
+      <img src="2025/day_05.png" alt="Day 05">
+      <div class="day-number">05</div>
+      <div class="day-title">Ranking</div>
+    </a>
+
+    <!-- Day 06 (Empty) -->
+    <div class="day-thumbnail empty-thumbnail">
+      <div class="day-number">06</div>
+      <div class="day-title">F. Nightingale</div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<div class="footer-content">
+  <p>Made with Quarto and GitHub Copilot</p>
+  <p>on a <a href="https://frame.work/" target="_blank">Framework Laptop 13</a> running <a href="https://fedoraproject.org/kde/" target="_blank">Fedora KDE 42</a> and <a href="https://zed.dev/" target="_blank">Zed</a></p>
+</div>
+```

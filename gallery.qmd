@@ -1,0 +1,13 @@
+---
+title: "Gallery Redirect"
+page-layout: full
+toc: false
+---
+
+<meta http-equiv="refresh" content="0; url=index.html">
+
+<p>Redirecting to <a href="index.html">Gallery</a>...</p>
+
+<script>
+  window.location.href = "index.html";
+</script>

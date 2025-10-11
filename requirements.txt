@@ -1,0 +1,17 @@
+matplotlib>=3.7.0
+seaborn>=0.12.0
+pandas>=2.0.0
+numpy>=1.24.0
+plotly>=5.13.0
+jupyter>=1.0.0
+nbformat>=5.7.0
+jupyterlab>=3.6.0
+ipykernel>=6.21.0
+hdx-python-api>=5.9.0
+ipywidgets>=8.0.0
+geopandas>=0.12.0
+mapclassify>=2.5.0
+scikit-learn>=1.2.0
+statsmodels>=0.13.0
+palettable>=3.3.0
+adjustText>=0.8

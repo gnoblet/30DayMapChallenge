@@ -1,0 +1,82 @@
+---
+title: "What about it?"
+format:
+  html:
+    toc: false
+    css: styles.css
+---
+
+::: {.about-container}
+
+::: {.about-section}
+## About the 30 Day Map Challenge
+
+The [#30DayMapChallenge](https://30daymapchallenge.com/) is a community-driven challenge that encourages participants to create a map visualization each day in November. The challenge aims to promote the use of maps in data storytelling and to explore various mapping techniques and tools.
+
+:::
+
+::: {.about-section}
+## The Challenge
+
+Each day has a specific prompt that guides the creation of a visualization. The prompts are as diverse as 'points', 'lines', 'map from 2125', and more.
+
+For this challenge, I primarily use:
+
+- **R** with packages like ggplot2, tmap, and sf
+- **Python** with libraries like matplotlib and geopandas
+- Various data sources including open data repositories, APIs, and self-collected data
+:::
+
+## Acknowledgements
+
+- The #30DayMapChallenge community for inspiration and feedback
+- Various data providers and sources used throughout the challenge
+- Open source maintainers of the visualization libraries and tools
+
+::: {.footer-content}
+Made with Quarto.
+
+on a [Framework Laptop 13](https://frame.work/) running [Fedora KDE 42](https://fedoraproject.org/kde/) and [Zed](https://zed.dev/)
+:::
+
+:::
+
+<style>
+.about-container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+.about-section {
+  margin-bottom: 2rem;
+  padding-bottom: 1rem;
+}
+
+.about-section:last-child {
+  border-bottom: none;
+}
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  grid-gap: 2rem;
+  margin-top: 1rem;
+}
+
+.tools-column h3 {
+  color: #3a506b;
+  border-bottom: 2px solid #5bc0be;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.footer-content {
+  margin-top: 3rem;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #666;
+}
+</style>
