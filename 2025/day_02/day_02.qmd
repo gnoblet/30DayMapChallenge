@@ -7,11 +7,11 @@ format:
     fig-dpi: 600
 editor: visual
 execute:
+  freeze: true
   echo: true
   warning: false
   message: false
 ---
-
 
 ![](day_02.png)
 
