@@ -31,6 +31,8 @@ toc: false
 
   Each map you see here corresponds to a daily challenge from the 2025 edition of the   [#30DayMapChallenge](https://30daymapchallenge.com/). Some maps are most likely complete, while others are works in progress or placeholders for future creations. For instance, adding annotations whenever time lacked to do so.
 
+  I take the challenge as a learning and sharing time, exploring new techniques, tools, and datasets. Feel free to check the code behind each map by clicking on the thumbnails.
+
   🍂 Have fun, explore, and reuse!
 
   ---Guillaume Noblet

@@ -15,7 +15,10 @@ execute:
 
 ![](day_02.png)
 
+This rivers and basins map follows Milos Popovic's great tutorial!
+
 ```{r}
+#| eval: false
 
 # Libraries 
 library(giscoR)
@@ -93,6 +96,8 @@ ch_rivers_basin <- st_intersection(ch_rivers, ch_basin) |>
 ```
 
 ```{r}
+#| eval: false
+
 # Fonts
 showtext_auto()
 showtext_opts(dpi = 600)

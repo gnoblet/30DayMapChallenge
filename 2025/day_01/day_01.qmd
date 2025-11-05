@@ -16,6 +16,9 @@ execute:
 # First, prep data
 
 ```{r}
+# do not run
+#| eval: false
+
 # Libraries
 library(data.table)
 library(janitor)
@@ -50,6 +53,8 @@ dat <- fread("OTC_ACCIDENTS.csv") |>
 # Let's map
 
 ```{r}
+#| eval: false
+
 # Get geneva bouding box
 geneva_bb <- getbb("geneva", format_out = "sf_polygon")
 geneva_bb <- geneva_bb[1, ] # Only main polygon
@@ -91,6 +96,8 @@ dat <- dat |>
 ```
 
 ```{r}
+#| eval: false
+
 #  Colors
 bg_fill <- "#0b1220"
 major_road <- "#21394bff"
