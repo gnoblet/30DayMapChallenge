@@ -1,0 +1,171 @@
+---
+title: "Day 02: Lines"
+date: "2025-11-01"
+format:
+  html:
+    fig-format: svg
+    fig-dpi: 600
+editor: visual
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+
+![](day_02.png)
+
+```{r}
+
+# Libraries 
+library(giscoR)
+library(sf)
+library(dplyr)
+library(ggplot2)
+library(paletteer)
+library(ggtext)
+library(showtext)
+library(sysfonts)
+library(ggbranding)
+library(httr2)
+
+# Disable s2 geometry
+sf::sf_use_s2(FALSE)
+
+# Get data for borders
+ch_borders <- gisco_get_countries(resolution = "03", country = "CHE")
+
+# Get data for basins
+url <- "https://data.hydrosheds.org/file/HydroBASINS/customized_with_lakes/hybas_lake_eu_lev06_v1c.zip"
+# get zip file with httr2
+tmp_zip <- tempfile(fileext = "basin_zip.zip") # where the zip will be saved
+req <- request(url) |>
+  req_perform() |>
+  resp_body_raw() |> # raw binary content
+  writeBin(con = "basin.zip")
+# unzip to a temp folder
+unzip(zipfile = "basin.zip", exdir = "basin")
+shp_path <- list.files("basin", pattern = "\\.shp$", full.names = TRUE)[1]
+# basins read
+ch_basin <- st_read(shp_path, quiet = TRUE) |>
+  st_make_valid() |>
+  st_intersection(ch_borders)
+
+# Get data for rivers
+url <- "https://data.hydrosheds.org/file/HydroRIVERS/HydroRIVERS_v10_eu_shp.zip"
+req <- request(url) |>
+  req_perform() |>
+  resp_body_raw() |>
+  writeBin(con = "rivers.zip")
+# unzip to a temp folder
+unzip(zipfile = "rivers.zip", exdir = "rivers")
+shp_path <- list.files(
+  "rivers",
+  pattern = "\\.shp$",
+  full.names = TRUE,
+  recursive = TRUE
+)[1]
+# rivers read
+ch_rivers <- st_read(shp_path, quiet = TRUE) |>
+  st_make_valid() |>
+  st_intersection(ch_borders)
+
+
+# Rivers per basin
+ch_rivers_basin <- st_intersection(ch_rivers, ch_basin) |>
+  # flow width
+  mutate(
+    width = as.numeric(
+      ORD_FLOW
+    ),
+    # flow width
+    width = case_when(
+      width <= 2 ~ 2,
+      width == 3 ~ 1.5,
+      width == 4 ~ 1.1,
+      width == 5 ~ 0.8,
+      width == 6 ~ 0.5,
+      .default = 0.1
+    ),
+    halo = width + 0.6
+  ) |>
+  sf::st_as_sf()
+```
+
+```{r}
+# Fonts
+showtext_auto()
+showtext_opts(dpi = 600)
+font_add_google("Oswald", "oswald")
+
+# Plot
+p <- ggplot(ch_rivers_basin) +
+  # Halo layer
+  geom_sf(
+    aes(size = halo),
+    color = "white",
+    alpha = 0.1,
+    lineend = "round"
+  ) +
+  # Colored rivers
+  geom_sf(
+    aes(
+      color = factor(
+        HYBAS_ID
+      ),
+      size = width,
+      alpha = width
+    )
+  ) +
+  # Colours from paletteer
+  scale_colour_paletteer_d("khroma::light") +
+  # Sizes of lines
+  scale_size(
+    range = c(0.5, 2)
+  ) +
+  # Void base theme with Oswald font
+  theme_void(
+    base_family = "oswald"
+  ) +
+  # Titl
+  labs(
+    title = "Swiss Basins and Rivers"
+  ) +
+  # Branding
+  add_branding(
+    github = "gnoblet",
+    bluesky = "gnoblet.bsky.social",
+    website = "guillaume-noblet.com",
+    additional_text = "Data: HydroSHEDS. Inspired by Milos Popovic's tutorial",
+    line_spacing = 2L,
+    icon_color = "white",
+    text_color = "white",
+    additional_text_color = "white",
+    text_size = "18pt",
+    icon_size = "18pt",
+    caption_halign = 0.5,
+    text_family = "oswald",
+    caption_margin = margin(t = 10, b = 10)
+  ) +
+    # Theme
+  theme(
+    title = element_textbox_simple(
+      family = "oswald",
+      color = "white",
+      size = 26,
+      halign = 0.5,
+      width = NULL,
+      margin = margin(t = 10, b = 10, l = 20, r = 10)
+    ),
+    legend.position = "none",
+    plot.background = element_rect(
+      fill = "black",
+      color = NA
+    ),
+    plot.margin = margin(20, 20, 20, 20)
+  )
+
+# Save
+ggsave("day_02.png", p, width = 12, height = 8, dpi = 600)
+
+```
