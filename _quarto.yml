@@ -6,33 +6,25 @@ project:
 
 website:
   title: "30 Day Map Challenge"
-  navbar:
-    left:
-      - text: "Gallery 2025"
-        href: index.qmd
-      - text: "About"
-        href: about.qmd
-    background: "#f8f9fa"
-    foreground: "#212529"
-  site-url: "https://gnoblet.github.io/30DayMapChallenge"
+  navbar: false
+  back-to-top-navigation: true
+  site-url: "https://guillaume-noblet/30DayMapChallenge"
   repo-url: "https://github.com/gnoblet/30DayMapChallenge"
-  repo-actions: [edit, issue]
   favicon: "images/favicon.png"
   page-navigation: true
 
 format:
   html:
-    theme: cosmo
-    css: styles.css
+    theme: [cosmo, styles.scss]
+    mainfont: "Inter"
     toc: false
-    self-contained: false
-    html-math-method: mathjax
+    highlight-style: github
+    smooth-scroll: true
+    title-block-banner: false
     grid:
       sidebar-width: 250px
-      body-width: 900px
-      margin-width: 300px
-    include-in-header:
-      - text: |
-          <link rel="preconnect" href="https://fonts.googleapis.com">
-          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-          <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+      body-width: 700px
+      margin-width: 200px
+
+resources: 
+  - fonts/
