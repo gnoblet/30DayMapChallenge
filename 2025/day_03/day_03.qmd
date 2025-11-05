@@ -12,6 +12,8 @@ execute:
   message: false
 ---
 
+![](day_03.png)
+
 ```{r}
 #| eval: false
 
