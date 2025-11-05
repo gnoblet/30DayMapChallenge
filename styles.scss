@@ -1,0 +1,390 @@
+/* custom.scss */
+
+$web-font-path: false; // Disable Google Fonts
+
+/*-- scss:defaults --*/
+
+// Colors
+$primary-color: #3a506b;
+$secondary-color: #5bc0be;
+$accent-color: #f48c06;
+$bg-color: #f8f9fa;
+$text-color: #212529;
+
+$success: $secondary-color;
+$link: $primary-color;
+
+// Layout
+$border-radius: 8px;
+$card-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+$transition-speed: 0.3s;
+
+// Fonts
+$font-family-sans-serif: "Inter", sans-serif;
+$line-height-base: 1.6;
+
+/*-- scss:rules --*/
+
+@font-face {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("./fonts/Inter-Regular.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url("./fonts/Inter-Bold.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Inter";
+    font-style: italic;
+    font-weight: 400;
+    font-display: swap;
+    src: url("./fonts/Inter-Italic.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Inter";
+    font-style: italic;
+    font-weight: 700;
+    font-display: swap;
+    src: url("./fonts/Inter-BoldItalic.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src: url("./fonts/Inter-Light.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url("./fonts/Inter-SemiBold.woff2") format("woff2");
+}
+
+/* 30DayMapChallenge Website Styles */
+
+body {
+    background-color: $bg-color;
+    color: $text-color;
+}
+
+a {
+    color: $primary-color;
+    text-decoration: none;
+    transition: color $transition-speed;
+    font-weight: 700;
+
+    &:hover {
+        color: $secondary-color;
+    }
+}
+
+// Font Awesome icons
+.fa,
+.fab,
+.fal,
+.far,
+.fas {
+    color: $primary-color;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5 {
+    font-weight: 700;
+    line-height: 1.5;
+}
+
+/* Gallery Grid Styling */
+.gallery {
+    margin-top: 2rem;
+    margin-bottom: 4rem;
+}
+
+/* Legacy card styles for compatibility */
+.card {
+    border-radius: $border-radius;
+    overflow: hidden;
+    box-shadow: $card-shadow;
+    height: 100%;
+    transition: all $transition-speed;
+}
+
+.card-img-top {
+    height: 220px;
+    object-fit: cover;
+    object-position: center;
+    border-bottom: 1px solid #eee;
+}
+
+.card-body {
+    padding: 1rem;
+}
+
+.card-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+.placeholder-card {
+    background-color: var(--empty-thumbnail-bg);
+    border: 1px dashed #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    min-height: 200px;
+    text-align: center;
+    opacity: 0.7;
+}
+
+/* Individual Chart Page Styling */
+.map-details {
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+}
+
+.map-image {
+    margin: 2rem 0;
+    box-shadow: $card-shadow;
+    border-radius: $border-radius;
+}
+
+.map-image img {
+    width: 100%;
+    border-radius: $border-radius;
+}
+
+.map-metadata {
+    margin-top: 1.5rem;
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Code blocks */
+pre {
+    border-radius: $border-radius;
+    margin: 1rem 0 2rem;
+}
+
+.sourceCode {
+    font-size: 0.9rem;
+}
+
+/* Footer */
+footer {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+    padding: 2rem 1rem;
+    text-align: center;
+    background-color: #f8f9fa;
+    border-top: 6px solid $primary-color;
+}
+
+.footer-content {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.author {
+    font-weight: 600;
+    margin-top: 0.5rem;
+}
+
+/* Map on index page */
+.featured-map {
+    margin: 2rem 0;
+    text-align: center;
+}
+
+.featured-map img {
+    max-width: 100%;
+    height: auto;
+    box-shadow: $card-shadow;
+    border-radius: $border-radius;
+}
+
+/* Responsive styling handled in each page's inline CSS */
+
+/* Template for each map page */
+.map-template {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.map-nav {
+    display: flex;
+    justify-content: space-between;
+    margin: 2rem 0 3rem;
+}
+
+.map-nav a {
+    text-decoration: none;
+    color: $primary-color;
+    font-weight: 600;
+    transition: color $transition-speed;
+}
+
+.map-nav a:hover {
+    color: $secondary-color;
+}
+
+/* Make the code section more readable */
+.code-with-copy {
+    position: relative;
+}
+
+.code-folding-btn {
+    position: absolute;
+    right: 0.5rem;
+    top: 0.5rem;
+    z-index: 10;
+    font-size: 0.8rem;
+    padding: 0.25rem 0.5rem;
+    background: rgba(255, 255, 255, 0.8);
+    border: none;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    .card-img-top {
+        height: 180px;
+    }
+}
+
+.category-row {
+    margin-bottom: 3rem;
+    padding-bottom: 2rem;
+}
+
+.category-title {
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+    color: #3a506b;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #5bc0be;
+}
+
+.day-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+.day-thumbnail {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s;
+    text-decoration: none;
+    display: block;
+}
+
+.day-thumbnail:hover {
+    transform: translateY(-5px);
+}
+
+.day-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+}
+
+.day-number {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-bottom-right-radius: 8px;
+    z-index: 2;
+}
+
+.day-title {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    color: white;
+    padding: 0.25rem 0.5rem;
+    font-size: 1rem;
+    text-align: center;
+    z-index: 2;
+}
+
+.empty-thumbnail {
+    background-color: #f0f0f0;
+    border: 1px dashed #ccc;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.7;
+}
+
+.empty-thumbnail .day-number {
+    position: static;
+    background-color: transparent;
+    color: #666;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.empty-thumbnail .day-title {
+    position: static;
+    background-color: transparent;
+    color: #666;
+}
+
+@media (max-width: 992px) {
+    .day-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+    .day-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 576px) {
+    .day-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.footer-content {
+    margin-top: 3rem;
+    padding-top: 1rem;
+    margin-bottom: 3rem;
+    border-top: 2px solid $primary-color;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #666;
+}
