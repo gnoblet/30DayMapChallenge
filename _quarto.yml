@@ -26,5 +26,10 @@ format:
       body-width: 700px
       margin-width: 200px
 
+execute:
+  freeze: auto
+  warning: false
+  message: false
+  
 resources: 
   - fonts/
