@@ -82,7 +82,7 @@ cities <- tribble(
   85 , 55 ,  7    , "#6c63ff" , "&#xf17b;" , "Murena OS" , "Font Awesome 7 Brands"     ,
   90 , 32 ,  8    , "#6d4aff" , "&#xf0e0;" , "Proton"    , "Font Awesome 7 Free Solid" ,
   70 , 45 ,  6.5  , "#ff7139" , "&#xf269;" , "Firefox"   , "Font Awesome 7 Brands"     ,
-  85 , 16 ,  6    , "#3a76f0" , "&#xf4f6;" , "Signal"    , "Font Awesome 7 Free Solid" ,
+  75 , 16 ,  6    , "#3a76f0" , "&#xf4f6;" , "Signal"    , "Font Awesome 7 Free Solid" ,
   92 , 75 ,  5.5  , "#000000" , "&#xf17c;" , "Linux"     , "Font Awesome 7 Brands"
 )
 
@@ -150,15 +150,6 @@ p <- ggplot() +
     color = coastline_color,
     linewidth = 2,
     alpha = 1
-  ) +
-
-  # Add circles for cities with shadow
-  geom_circle(
-    data = cities,
-    aes(x0 = x + 0.5, y0 = y - 0.5, r = size),
-    fill = "black",
-    alpha = 0.2,
-    show.legend = FALSE
   ) +
   geom_circle(
     data = cities,
