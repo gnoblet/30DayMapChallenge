@@ -68,10 +68,11 @@ toc: false
     </a>
 
     <!-- Day 04 -->
-    <div class="day-thumbnail empty-thumbnail">
+    <a href="2025/day_04/day_04.qmd" class="day-thumbnail">
+      <img src="2025/day_04/day_04.png" alt="Day 04">
       <div class="day-number">04</div>
-      <div class="day-title">Data challenge: My Data</div>
-    </div>
+      <div class="day-title">My Data</div>
+    </a>
 
     <!-- Day 05 -->
     <div class="day-thumbnail empty-thumbnail">

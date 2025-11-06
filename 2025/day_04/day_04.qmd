@@ -1,0 +1,262 @@
+---
+title: "Day 04 - My Data"
+author: "gnoblet"
+date: "2025-11-04"
+format:
+  html:
+    fig-format: svg
+    fig-dpi: 600
+editor: visual
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+![](day_04.png)
+
+
+## Map
+
+```{r}
+#| label: map
+#| warning: false
+#| fig-width: 16
+#| fig-height: 10
+#| eval: false
+
+library(ggplot2)
+library(ggforce)
+library(ggtext)
+library(dplyr)
+
+# Modern color palette with muted tones
+ocean_west <- "#3c5174ff" # Muted dark slate
+ocean_east <- "#366c6cff" # Muted dark teal
+land_color <- "#d1d5db" # Light gray for isthmus
+bg_color <- "#1e293b" # Softer dark slate background (less harsh than black)
+text_light <- "#f9fafb" # Light text
+text_dark <- "#151b23ff" # Dark text
+coastline_color <- "#ffffff" # White coastlines
+
+# Simple straight coastlines
+west_coast <- data.frame(
+  x = c(40, 40, 40),
+  y = c(0, 50, 100)
+)
+
+east_coast <- data.frame(
+  x = c(60, 60, 60),
+  y = c(0, 50, 100)
+)
+
+# Create ocean polygons
+west_ocean_polygon <- data.frame(
+  x = c(0, 0, west_coast$x, 0),
+  y = c(0, 100, rev(west_coast$y), 0)
+)
+
+east_ocean_polygon <- data.frame(
+  x = c(100, 100, rev(east_coast$x), 100),
+  y = c(0, 100, rev(east_coast$y), 0)
+)
+
+# Create isthmus polygon
+isthmus_polygon <- data.frame(
+  x = c(west_coast$x, rev(east_coast$x)),
+  y = c(west_coast$y, rev(east_coast$y))
+)
+
+# Define cities/services data with unicode icons
+cities <- tribble(
+  ~x , ~y , ~size , ~color    , ~unicode   , ~name       , ~font_family                ,
+  # BIG TECH (West)
+  17 , 70 , 12    , "#4285f4" , "&#xf1a0;" , "Google"    , "Font Awesome 7 Brands"     ,
+  10 , 49 ,  5    , "#0866ff" , "&#xf39e;" , "Meta"      , "Font Awesome 7 Brands"     ,
+  27 , 48 ,  7    , "#ff9900" , "&#xf270;" , "Amazon"    , "Font Awesome 7 Brands"     ,
+  22 , 28 ,  7    , "#555555" , "&#xf179;" , "Apple"     , "Font Awesome 7 Brands"     ,
+   8 , 24 ,  6    , "#00a4ef" , "&#xf3ca;" , "Microsoft" , "Font Awesome 7 Brands"     ,
+  30 , 12 ,  5.5  , "#25d366" , "&#xf232;" , "WhatsApp"  , "Font Awesome 7 Brands"     ,
+  # OPEN SOURCE (East)
+  72 , 70 ,  9    , "#294172" , "&#xf30d;" , "Fedora"    , "Font Awesome 7 Brands"     ,
+  85 , 55 ,  7    , "#6c63ff" , "&#xf17b;" , "Murena OS" , "Font Awesome 7 Brands"     ,
+  90 , 32 ,  8    , "#6d4aff" , "&#xf0e0;" , "Proton"    , "Font Awesome 7 Free Solid" ,
+  70 , 45 ,  6.5  , "#ff7139" , "&#xf269;" , "Firefox"   , "Font Awesome 7 Brands"     ,
+  85 , 16 ,  6    , "#3a76f0" , "&#xf4f6;" , "Signal"    , "Font Awesome 7 Free Solid" ,
+  92 , 75 ,  5.5  , "#000000" , "&#xf17c;" , "Linux"     , "Font Awesome 7 Brands"
+)
+
+#  HTML formatted labels for icons
+cities <- cities |>
+  mutate(
+    icon_label = sprintf(
+      "<span style='font-family:\"%s\"; color: white; font-size: %dpt;'>%s</span>",
+      font_family,
+      as.integer(size * 3),
+      unicode
+    )
+  )
+
+#  Plot
+p <- ggplot() +
+  # Background
+  theme_void() +
+  theme(
+    plot.background = element_rect(fill = bg_color, color = NA),
+    plot.margin = margin(20, 20, 20, 20)
+  ) +
+  coord_fixed(
+    xlim = c(0, 100),
+    ylim = c(-45, 100),
+    expand = FALSE,
+    clip = "off"
+  ) +
+
+  # Draw west ocean as solid color
+  geom_polygon(
+    data = west_ocean_polygon,
+    aes(x = x, y = y),
+    fill = ocean_west,
+    color = NA
+  ) +
+
+  # Draw east ocean as solid color
+  geom_polygon(
+    data = east_ocean_polygon,
+    aes(x = x, y = y),
+    fill = ocean_east,
+    color = NA
+  ) +
+
+  # Draw isthmus as solid polygon
+  geom_polygon(
+    data = isthmus_polygon,
+    aes(x = x, y = y),
+    fill = land_color,
+    color = NA
+  ) +
+
+  # Draw white coastlines
+  geom_path(
+    data = west_coast,
+    aes(x = x, y = y),
+    color = coastline_color,
+    linewidth = 2,
+    alpha = 1
+  ) +
+  geom_path(
+    data = east_coast,
+    aes(x = x, y = y),
+    color = coastline_color,
+    linewidth = 2,
+    alpha = 1
+  ) +
+
+  # Add circles for cities with shadow
+  geom_circle(
+    data = cities,
+    aes(x0 = x + 0.5, y0 = y - 0.5, r = size),
+    fill = "black",
+    alpha = 0.2,
+    show.legend = FALSE
+  ) +
+  geom_circle(
+    data = cities,
+    aes(x0 = x, y0 = y, r = size, fill = color),
+    color = "white",
+    linewidth = 2,
+    show.legend = FALSE
+  ) +
+  scale_fill_identity() +
+
+  # Add FontAwesome icons using ggtext
+  geom_richtext(
+    data = cities,
+    aes(x = x, y = y, label = icon_label),
+    fill = NA,
+    label.color = NA,
+    label.padding = grid::unit(rep(0, 4), "pt")
+  ) +
+
+  # Add service names
+  geom_text(
+    data = cities,
+    aes(x = x, y = y - size - 2.5, label = name),
+    color = text_light,
+    size = 5,
+    fontface = "bold",
+    show.legend = FALSE
+  ) +
+
+  # Add ocean labels
+  annotate(
+    "text",
+    x = 15,
+    y = 95,
+    label = "BIG TECH\nOCEAN",
+    color = text_light,
+    hjust = 0.5,
+    size = 8,
+    fontface = "bold.italic"
+  ) +
+  annotate(
+    "text",
+    x = 85,
+    y = 95,
+    label = "OPEN SOURCE &\nPRIVACY SEA",
+    color = text_light,
+    hjust = 0.5,
+    size = 8,
+    fontface = "bold.italic"
+  ) +
+  annotate(
+    "text",
+    x = 48.5,
+    y = 50,
+    label = "THE\nISTHMUS",
+    color = text_dark,
+    size = 8,
+    fontface = "bold",
+    angle = 90,
+    alpha = 0.8
+  ) +
+
+  # Add title at bottom above narrative text
+  annotate(
+    "text",
+    x = 50,
+    y = -7,
+    label = "A Personal Digital Landscape",
+    color = text_light,
+    size = 15,
+    fontface = "bold"
+  ) +
+
+  # Add narrative text at bottom
+  annotate(
+    "text",
+    x = 50,
+    y = -28,
+    label = paste(
+      strwrap(
+        "I know avoiding Big Tech completely is hard, if not unfeasible whenever you use an electronic device. GitHub hosts my code, Google still creeps into my searches sometimes. But I'm trying. Fedora replaced Windows on my laptop. Murena stripped Google off my phone. Firefox instead of Chrome or Edge. Signal over WhatsApp. Proton for email. Each switch felt small at first, but they add up.\n
+        The narrow isthmus on this map? That's me—stuck between two worlds, trying to fully cross over. It's messy, imperfect, and honestly exhausting sometimes. But trying to have our data be ours to fight for. Next target: moving everything off GitHub to Codeberg.",
+        90
+      ),
+      collapse = "\n"
+    ),
+    color = text_light,
+    size = 6.5,
+    lineheight = 1.1,
+    alpha = 0.9
+  )
+
+# Save plot
+ggsave(
+  "day_04.png",
+  p,
+  width = 12,
+  height = 14,
+  dpi = 600
+)
+```
