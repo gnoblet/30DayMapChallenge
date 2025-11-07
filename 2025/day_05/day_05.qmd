@@ -6,6 +6,8 @@ format:
   html:
     fig-format: svg
     fig-dpi: 600
+    grid:
+      body-width: 900px
 editor: visual
 execute:
   echo: true
@@ -18,6 +20,10 @@ execute:
 Let's plot a 3D elevation map of Switzerland using R! We'll use the `giscoR` package to get the country boundaries, the `elevatr` package to fetch elevation data, and the `tmap` and `tmap.mapgl` packages to create an interactive 3D map. Long time no see, `tmap`.
 
 ```{r}
+#| out-width: "100%"
+#| out-height: 600px
+#| fig-height: 600
+
 # Libraries
 library(giscoR)
 library(sf)
