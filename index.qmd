@@ -75,10 +75,11 @@ toc: false
     </a>
 
     <!-- Day 05 -->
-    <div class="day-thumbnail empty-thumbnail">
+    <a href="2025/day_05/day_05.qmd" class="day-thumbnail">
+      <img src="2025/day_05/day_05.png" alt="Day 05">
       <div class="day-number">05</div>
       <div class="day-title">Earth (Classical Elements 1/4)</div>
-    </div>
+    </a>
 
     <!-- Day 06 -->
     <div class="day-thumbnail empty-thumbnail">
