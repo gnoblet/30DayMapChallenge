@@ -2548,6 +2548,12 @@
       "Repository": "https://p3m.dev/cran/latest/bin/linux/rhel10-x86_64/4.5",
       "Encoding": "UTF-8"
     },
+    "progress": {
+      "Package": "progress",
+      "Version": "1.2.3",
+      "Source": "Repository",
+      "Repository": "CRAN"
+    },
     "progressr": {
       "Package": "progressr",
       "Version": "0.16.0",
