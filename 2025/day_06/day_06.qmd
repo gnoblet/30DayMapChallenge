@@ -1,0 +1,241 @@
+---
+title: "Day 06 - Dimensions"
+author: "gnoblet"
+date: "2025-11-06"
+format:
+  html:
+    fig-format: svg
+    fig-dpi: 600
+editor: visual
+execute:
+  echo: true
+  warning: false
+  message: false
+---
+
+```{r}
+# Libraries
+library(ggplot2)
+library(dplyr)
+library(sf)
+library(rvest)
+library(stringr)
+library(tibble)
+library(showtext)
+library(sysfonts)
+library(tidyterra)
+library(geodata)
+library(ggrepel)
+library(ggtext)
+library(ggbranding)
+library(cols4all)
+library(janitor)
+
+# Get Switzerland raster through raster package
+ch <- elevation_30s("CH")
+
+# Get shades using tidyterra
+slope <- terrain(ch, "slope", unit = "radians")
+aspect <- terrain(ch, "aspect", unit = "radians")
+hill <- shade(slope, aspect, 30, 270)
+
+# Scrape tallest structures data from Wikipedia
+url <- "https://en.wikipedia.org/wiki/List_of_tallest_structures_in_Switzerland"
+page <- read_html(url)
+
+# Extract the table
+buildings_table <- page |>
+  html_element("table.wikitable") |>
+  html_table()
+
+# Clean and prepare data
+buildings <- buildings_table |>
+  clean_names() |>
+  mutate(
+    # Extract numeric height
+    height = str_replace(height, ",", "."),
+    height_m = as.numeric(gsub("[^0-9.]", "", height)),
+    # Extract year (first 4 digits)
+    year = as.numeric(sub("^.*?(\\d{4}).*$", "\\1", year_built)),
+    # Extract coordinates from the coordinates column
+    # Pattern: extract decimal coordinates like "47.5717389°N 7.6869889°E"
+    lat = as.numeric(sub(".*?([0-9.]+)°N.*", "\\1", coordinates)),
+    lon = as.numeric(sub(".*?([0-9.]+)°E.*", "\\1", coordinates)),
+    structure_type = case_when(
+      str_detect(tolower(construction_type_2), "dam") ~ "Dam",
+      str_detect(tolower(construction_type_2), "bridge") ~ "Bridge",
+      str_detect(tolower(construction_type_2), "wind") ~ "Wind Turbine",
+      str_detect(tolower(construction_type_2), "tower|mast|pylon") ~ "Tower",
+      str_detect(
+        tolower(construction_type_2),
+        "skyscraper|highrise|building"
+      ) ~ "Building",
+      str_detect(
+        tolower(construction_type_2),
+        "chimney|cooling|silo"
+      ) ~ "Industrial",
+      str_detect(
+        tolower(construction_type_2),
+        "church|cathedral"
+      ) ~ "Religious",
+      .default = "Other"
+    )
+  ) |>
+  filter(!is.na(height_m), !is.na(lat), !is.na(lon)) |>
+  # Convert to sf object
+  st_as_sf(coords = c("lon", "lat"), crs = 4326)
+
+
+# Top 5 buildings by height
+top_buildings <- buildings |>
+  slice_max(height_m, n = 5) |>
+  pull(construction_type)
+
+```
+
+```{r}
+# Fonts
+showtext_auto()
+showtext_opts(dpi = 600)
+font_add_google("Lato", "main")
+
+# branding
+branding <- branding(
+  additional_text = "Data: Wikipedia | Day 06 - Dimensions of #30DayMapChallenge",
+  github = "gnoblet",
+  bluesky = "gnoblet.bsky.social",
+  website = "guillaume-noblet.com",
+  additional_text_color = "#2b2b2bff",
+  text_color = "#2b2b2bff",
+  icon_color = "#2b2b2bff",
+  icon_size = "13pt",
+  text_size = "13pt",
+  additional_text_size = "13pt",
+  text_family = 'main',
+  line_spacing = 2L
+)
+
+title <- "Dams Dominate the Alpine Heights"
+subtitle <- paste0(
+  "From the Grande Dixence (285m, 1965) to the Mauvoisin Dam (250m, 1957), most of Switzerland's tallest structures are found in the mountains. Urban towers like Basel's Roche Tower (178m) pale in comparison to these Alpine giants."
+)
+
+# Map
+p <- ggplot() +
+  # Add elevation as raster/contour background
+  geom_spatraster(data = hill) +
+  scale_fill_gradient(low = "#fbfbfbff", high = "#6a6a6aff", na.value = NA) +
+  # Buildings dots
+  geom_sf(
+    data = buildings,
+    aes(size = height_m, color = structure_type),
+    alpha = 0.6,
+    show.legend = TRUE
+  ) +
+  # Add building names for tallest ones
+  geom_text_repel(
+    data = buildings |> slice_max(height_m, n = 5),
+    aes(
+      label = paste0(construction_type, " (", height_m, "m)"),
+      geometry = geometry
+    ),
+    family = "main",
+    size = 4.5,
+    # nudge_y up for grand dixence dam and down for Trasmitter and Swisscom
+    nudge_y = case_when(
+      str_detect(top_buildings, "Grande Dixence") ~ 0.2,
+      str_detect(top_buildings, "Transmitter|Swisscom") ~ -0.2,
+      .default = 0
+    ),
+    # nudge_x right for Monte Ceneri and Luzzone dam and left for others
+    nudge_x = ifelse(
+      str_detect(top_buildings, "Monte Ceneri|Luzzone"),
+      1,
+      -0.8
+    ),
+    color = "#000000",
+    stat = "sf_coordinates",
+    force = 10,
+    segment.curvature = -1e-20,
+    bg.color = "white",
+    bg.r = 0.2
+  ) +
+  # Colors from cols4all package
+  scale_color_discrete_c4a_cat(
+    "cols4all.area7d",
+    name = "Structure Type",
+    guide = guide_legend(override.aes = list(size = 4))
+  ) +
+  scale_size_continuous(
+    range = c(1, 12),
+    name = "Height (m)",
+    guide = guide_legend(
+      title.position = "top"
+    )
+  ) +
+  # no guide for fill
+  guides(fill = "none") +
+  # Increase y limits top and bottom to add title and caption
+  # Based on ch bounding box
+  coord_sf(
+    ylim = c(st_bbox(ch)["ymin"] - 0.2, st_bbox(ch)["ymax"] + 0.4),
+    xlim = c(st_bbox(ch)["xmin"], st_bbox(ch)["xmax"])
+  ) +
+  # Add branding at the bottom
+  geom_richtext(
+    aes(label = branding),
+    x = 5.8,
+    y = st_bbox(ch)["ymin"] - 0.1,
+    fill = NA,
+    label.color = NA,
+    hjust = 0,
+    vjust = 0.5,
+  ) +
+  # Add title
+  geom_richtext(
+    aes(label = title),
+    x = 5.8,
+    y = st_bbox(ch)["ymax"] + 0.3,
+    fill = NA,
+    label.color = NA,
+    hjust = 0,
+    family = "main",
+    fontface = "bold",
+    size = 8
+  ) +
+  # Add subtitle
+  geom_textbox(
+    aes(label = subtitle),
+    x = 5.8,
+    y = st_bbox(ch)["ymax"] + 0.2,
+    hjust = 0,
+    family = "main",
+    size = 5.5,
+    width = unit(0.95, "npc"),
+    box.color = NA,
+    fill = NA,
+    vjust = 1
+  ) +
+  # Theme
+  theme_void() +
+  theme(
+    text = element_text(family = "main", size = 15),
+    plot.background = element_rect(fill = "#f5f5f5", color = NA),
+    panel.background = element_rect(fill = "#f5f5f5", color = NA),
+    legend.position = "right",
+    legend.background = element_rect(fill = "#f5f5f5", color = "#969696"),
+    legend.title = element_text(color = "#2b2b2bff", face = "bold"),
+    legend.text = element_text(color = "#2b2b2bff"),
+    legend.margin = margin(t = 0.5, r = 0.8, unit = "cm")
+  )
+
+# Save
+ggsave(
+  "day_06.png",
+  plot = p,
+  width = 12,
+  height = 8,
+  dpi = 600
+)
+
+```

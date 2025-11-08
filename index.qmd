@@ -82,10 +82,11 @@ toc: false
     </a>
 
     <!-- Day 06 -->
-    <div class="day-thumbnail empty-thumbnail">
+    <a href="2025/day_06/day_06.qmd" class="day-thumbnail">
+      <img src="2025/day_06/day_06.png" alt="Day 06">
       <div class="day-number">06</div>
       <div class="day-title">Dimensions</div>
-    </div>
+    </a>
 
     <!-- Day 07 -->
     <div class="day-thumbnail empty-thumbnail">
