@@ -13,6 +13,8 @@ execute:
   message: false
 ---
 
+![](day_06.png)
+
 ```{r}
 # Libraries
 library(ggplot2)
