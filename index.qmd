@@ -48,42 +48,42 @@ toc: false
   <div class="day-grid">
     <!-- Day 01 -->
     <a href="2025/day_01/day_01.qmd" class="day-thumbnail">
-      <img src="2025/day_01/day_01.png" alt="Day 01">
+      <img src="2025/day_01/day_01_thumb.png" alt="Day 01">
       <div class="day-number">01</div>
       <div class="day-title">Points</div>
     </a>
 
     <!-- Day 02 -->
     <a href="2025/day_02/day_02.qmd" class="day-thumbnail">
-      <img src="2025/day_02/day_02.png" alt="Day 02">
+      <img src="2025/day_02/day_02_thumb.png" alt="Day 02">
       <div class="day-number">02</div>
       <div class="day-title">Lines</div>
     </a>
 
     <!-- Day 03 -->
     <a href="2025/day_03/day_03.qmd" class="day-thumbnail">
-      <img src="2025/day_03/day_03.png" alt="Day 03">
+      <img src="2025/day_03/day_03_thumb.png" alt="Day 03">
       <div class="day-number">03</div>
       <div class="day-title">Polygons</div>
     </a>
 
     <!-- Day 04 -->
     <a href="2025/day_04/day_04.qmd" class="day-thumbnail">
-      <img src="2025/day_04/day_04.png" alt="Day 04">
+      <img src="2025/day_04/day_04_thumb.png" alt="Day 04">
       <div class="day-number">04</div>
       <div class="day-title">My Data</div>
     </a>
 
     <!-- Day 05 -->
     <a href="2025/day_05/day_05.qmd" class="day-thumbnail">
-      <img src="2025/day_05/day_05.png" alt="Day 05">
+      <img src="2025/day_05/day_05_thumb.png" alt="Day 05">
       <div class="day-number">05</div>
       <div class="day-title">Earth (Classical Elements 1/4)</div>
     </a>
 
     <!-- Day 06 -->
     <a href="2025/day_06/day_06.qmd" class="day-thumbnail">
-      <img src="2025/day_06/day_06.png" alt="Day 06">
+      <img src="2025/day_06/day_06_thumb.png" alt="Day 06">
       <div class="day-number">06</div>
       <div class="day-title">Dimensions</div>
     </a>

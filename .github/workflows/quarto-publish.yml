@@ -78,6 +78,10 @@ jobs:
           version: 1.7.32
           tinytex: false
 
+      - name: Generate Thumbnails
+        run: |
+          Rscript generate_thumbnails.R
+
       - name: Render Quarto Project
         uses: quarto-dev/quarto-actions/render@v2
         with:
