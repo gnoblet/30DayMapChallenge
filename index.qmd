@@ -96,10 +96,11 @@ toc: false
     </a>
 
     <!-- Day 08 -->
-    <div class="day-thumbnail empty-thumbnail">
+    <a href="2025/day_08/day_08.qmd" class="day-thumbnail">
+      <img src="2025/day_08/day_08_thumb.png" alt="Day 08">
       <div class="day-number">08</div>
-      <div class="day-title">Urban (World Urbanism Day)</div>
-    </div>
+      <div class="day-title">Urban & Minimal map</div>
+    </a>
 
     <!-- Day 09 -->
     <div class="day-thumbnail empty-thumbnail">
@@ -114,10 +115,11 @@ toc: false
     </div>
 
     <!-- Day 11 -->
-    <div class="day-thumbnail empty-thumbnail">
+    <a href="2025/day_08/day_08.qmd" class="day-thumbnail">
+      <img src="2025/day_08/day_08_thumb.png" alt="Day 11">
       <div class="day-number">11</div>
-      <div class="day-title">Minimal map</div>
-    </div>
+      <div class="day-title">Urban & Minimal map</div>
+    </a>
 
     <!-- Day 12 -->
     <div class="day-thumbnail empty-thumbnail">

@@ -1,0 +1,246 @@
+---
+title: "Day 08: Urban & Minimal map"
+date: "2025-11-08"
+format:
+  html:
+    fig-format: svg
+    fig-dpi: 600
+editor: visual
+execute:
+  freeze: true
+  echo: true
+  warning: false
+  message: false
+---
+
+![](day_08.png)
+
+A minimal map of Geneva's urban fabric using the SITG topographic data. Bridging two days into one.
+
+```{r}
+#| eval: false
+
+# Libraries
+library(httr2)
+library(sf)
+library(dplyr)
+library(ggplot2)
+library(showtext)
+library(sysfonts)
+library(ggtext)
+library(ggbranding)
+library(patchwork)
+
+# Disable s2 geometry
+sf::sf_use_s2(FALSE)
+
+# Get data with httr2
+url <- "https://ge.ch/sitg/geodata/SITG/OPENDATA/SIPV_MN_CARTO_5-SHP.zip"
+tmp_zip <- tempfile(fileext = ".zip")
+req <- request(url) |>
+  req_perform() |>
+  resp_body_raw() |>
+  writeBin(con = "sipv_carto.zip")
+
+# Unzip
+unzip(zipfile = "sipv_carto.zip", exdir = "sipv_carto")
+
+# List all shapefiles
+shp_files <- list.files(
+  "sipv_carto",
+  pattern = "\\.shp$",
+  full.names = TRUE,
+  recursive = TRUE
+)[1]
+
+# Read layer
+urban_polygons <- st_read(shp_files, quiet = TRUE)
+
+# Mutate to character the categorical variables
+urban_polygons <- urban_polygons |>
+  mutate(across(
+    all_of(c("STATUT_OPN", "NAT_URB", "MESH_BARRI")),
+    as.character
+  ))
+
+```
+
+```{r}
+#| eval: false
+
+# Fonts
+showtext_auto()
+showtext_opts(dpi = 600)
+font_add("lineal_thin", "../../fonts/Lineal/Lineal-Light.otf")
+main_font <- "lineal_thin"
+
+# Colors
+col_title <- "grey90"
+col_subtitle <- "grey80"
+col_bg <- "#000000c9"
+
+# Base theme for all maps
+base_theme <-
+  theme_void(base_family = main_font) +
+  theme(
+    plot.title = element_text(
+      family = main_font,
+      face = "bold",
+      color = col_title,
+      size = 18,
+      hjust = 0.5,
+      margin = margin(b = 0)
+    ),
+    plot.subtitle = element_text(
+      family = main_font,
+      color = col_subtitle,
+      size = 16,
+      hjust = 0.5,
+      margin = margin(t = 5, b = 0)
+    ),
+    plot.background = element_rect(fill = col_bg, color = NA),
+    legend.position = "none"
+  )
+
+
+# Map 1: Naturalness (NAT_URB)
+p1 <- ggplot(urban_polygons) +
+  geom_sf(
+    aes(fill = factor(NAT_URB)),
+    color = NA,
+    size = 0
+  ) +
+  scale_fill_manual(
+    values = c(
+      "1" = "#FFECB3", # Light yellow - not natural
+      "2" = "#FFD54F", # Yellow
+      "3" = "#FFA726", # Orange
+      "4" = "#FF7043", # Deep orange
+      "5" = "#D84315" # Dark red-orange - very natural
+    ),
+    na.value = "white"
+  ) +
+  labs(
+    title = "Naturalness Level",
+    subtitle = "1 (Not Natural) · 5 (Natural)"
+  ) +
+  base_theme
+
+# Map 2: Barriers (MESH_BARRI)
+p2 <- ggplot(urban_polygons) +
+  geom_sf(
+    aes(fill = factor(MESH_BARRI)),
+    color = NA,
+    size = 0
+  ) +
+  scale_fill_manual(
+    values = c(
+      "0" = "#BBDEFB", # Light blue for no barrier
+      "1" = "#1565C0" # Dark blue for barrier
+    ),
+    na.value = "white"
+  ) +
+  labs(
+    title = "Urban Barriers",
+    subtitle = "Barrier · No Barrier"
+  ) +
+  base_theme
+
+# Map 3: Protection Status (STATUT_OPN)
+p3 <- ggplot(urban_polygons) +
+  geom_sf(
+    aes(fill = STATUT_OPN),
+    color = NA,
+    size = 0
+  ) +
+  scale_fill_manual(
+    values = c(
+      "1" = "#2E7D32", # Dark green for protected
+      "0" = "#C8E6C9" # Light green for not protected
+    ),
+    na.value = "white"
+  ) +
+  labs(
+    title = "Nature Protection Status",
+    subtitle = "None · Protected"
+  ) +
+  base_theme
+
+
+# Branding
+branding <- branding(
+  github = "gnoblet",
+  bluesky = "gnoblet.bsky.social",
+  website = "guillaume-noblet.com",
+  additional_text = "Data: SITG | Days 08 + 11: Urban + Minimal | Font: Lineal by Frank Adebiaye distributed by velvetyne.fr.",
+  line_spacing = 2L,
+  icon_color = col_subtitle,
+  text_color = col_subtitle,
+  additional_text_color = col_subtitle,
+  text_size = "13pt",
+  icon_size = "13pt",
+  text_family = main_font
+)
+
+# Create a branding plot for the bottom band
+p_branding <- ggplot() +
+  geom_textbox(
+    aes(label = branding),
+    x = 0.5,
+    y = 0.5,
+    hjust = 0.5,
+    vjust = 0.5,
+    family = main_font,
+    fill = NA,
+    box.color = NA,
+    width = unit(0.95, "npc")
+  ) +
+  theme_void() +
+  theme(
+    plot.background = element_rect(fill = col_bg, color = NA),
+    panel.background = element_rect(fill = col_bg, color = NA)
+  )
+
+# Define layout: three maps on top, branding band at bottom
+layout <- "
+AAABBBCCC
+AAABBBCCC
+AAABBBCCC
+AAABBBCCC
+AAABBBCCC
+AAABBBCCC
+DDDDDDDDD
+"
+
+# Combine all four plots with the layout
+p_final <- p1 +
+  p2 +
+  p3 +
+  p_branding +
+  plot_layout(design = layout) +
+  plot_annotation(
+    title = "Geneva Non-Urban Fabric",
+    theme = theme(
+      plot.title = element_text(
+        family = main_font,
+        face = "bold",
+        size = 26,
+        hjust = 0.5,
+        color = col_title,
+        margin = margin(t = 10, b = 20)
+      ),
+      plot.background = element_rect(fill = col_bg, color = NA),
+      panel.background = element_rect(fill = col_bg, color = NA)
+    )
+  )
+
+
+# Save combined map
+ggsave(
+  "day_08.png",
+  p_final,
+  width = 14,
+  height = 7,
+  dpi = 600
+)
+```
